@@ -1,0 +1,24 @@
+---
+name: Pull Request Commit Message Checker
+on:
+  pull_request:
+    types:
+      - opened
+      - edited
+      - reopened
+  
+  push:
+    branches:
+      - main
+      
+jobs:
+  check-commit-message:
+    name: Check Commit Message
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check Commit Type
+        uses: gsactions/commit-message-checker@v2
+        with:
+          pattern: ^[A-Z]{2,}-[0-9]{1,}:.*$
+          error: "Commit message format is invalid. It should be in the format of
+            '<TICKET-NUMBER>: A descriptive message'."
