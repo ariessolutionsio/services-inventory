@@ -1,0 +1,231 @@
+{
+	"info": {
+		"_postman_id": "9829470b-9ccf-4902-bb89-89b818592faa",
+		"name": "Inventory Availability",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "6633196"
+	},
+	"item": [
+		{
+			"name": "Add Inventory",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"skuId\" : \"1\",\r\n    \"nodeId\" : \"1\",\r\n    \"productKey\" : \"1\",\r\n    \"quantityOnStock\" : 151\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/v1/availability/addInventory",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"availability",
+						"addInventory"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "reserve Items",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"cartId\": \"abc\",\r\n    \"items\": [\r\n        {\r\n            \"lineItemId\": \"123\",\r\n            \"skuId\": \"3333\",\r\n            \"node\": \"222\",\r\n            \"quantity\": \"20\"\r\n        },\r\n        {\r\n            \"lineItemId\": \"124\",\r\n            \"skuId\": \"1\",\r\n            \"node\": \"\",\r\n            \"quantity\": \"1\"\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/v1/availability/order/abc",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"availability",
+						"order",
+						"abc"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Availability for Sku, Node",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/v1/availability/3333?node=222",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"availability",
+						"3333"
+					],
+					"query": [
+						{
+							"key": "node",
+							"value": "222"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Product Node",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/v1/availability/product/1?node=1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"availability",
+						"product",
+						"1"
+					],
+					"query": [
+						{
+							"key": "node",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Availability of Cart",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"cartId\": \"abc\",\r\n    \"items\": [\r\n        {\r\n            \"lineItemId\": \"123\",\r\n            \"skuId\": \"1\",\r\n            \"node\": \"1\",\r\n            \"quantity\": \"2\"\r\n        },\r\n        {\r\n            \"lineItemId\": \"124\",\r\n            \"skuId\": \"1\",\r\n            \"node\": \"\",\r\n            \"quantity\": \"12\"\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/v1/availability/cart/abc",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"availability",
+						"cart",
+						"abc"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Stock Update",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"cartId\": \"abc\",\r\n    \"items\": [\r\n        {\r\n            \"lineItemId\": \"123\",\r\n            \"skuId\": \"1\",\r\n            \"node\": \"1\",\r\n            \"quantity\": \"2\"\r\n        },\r\n        {\r\n            \"lineItemId\": \"124\",\r\n            \"skuId\": \"1\",\r\n            \"node\": \"\",\r\n            \"quantity\": \"12\"\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/v1/availability/3333/node/222/quantity/150",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"availability",
+						"3333",
+						"node",
+						"222",
+						"quantity",
+						"150"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete cart lines",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"cartId\": \"abc\",\r\n    \"items\": [\r\n        {\r\n            \"lineItemId\": \"123\",\r\n            \"skuId\": \"1\",\r\n            \"node\": \"1\",\r\n            \"quantity\": \"2\"\r\n        },\r\n        {\r\n            \"lineItemId\": \"124\",\r\n            \"skuId\": \"1\",\r\n            \"node\": \"\",\r\n            \"quantity\": \"12\"\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/v1/availability/order/abc?lines=123",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"availability",
+						"order",
+						"abc"
+					],
+					"query": [
+						{
+							"key": "lines",
+							"value": "123"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
