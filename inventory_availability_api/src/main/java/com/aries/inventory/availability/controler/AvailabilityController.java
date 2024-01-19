@@ -112,6 +112,6 @@ public class AvailabilityController {
   @DeleteMapping("/reservation/{cartId}")
   public ResponseEntity<String> removeReservationsForCartItems(@PathVariable String cartId, @Nullable @RequestParam List<String> lines) {
     String response = availabilityService.removeReservationsForCartItems(cartId, lines);
-    return new ResponseEntity<>(response, HttpStatus.NO_CONTENT);
+    return new ResponseEntity<>(response, HttpStatus.OK);
   }
 }
