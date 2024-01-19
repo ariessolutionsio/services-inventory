@@ -102,7 +102,7 @@ public class AvailabilityController {
   public ResponseEntity<Object> updateInventoryForNodeAndRemoveAllReservations(
       @PathVariable String sku, @PathVariable String nodeId, @PathVariable String amount) {
     availabilityService.updateInventoryForNodeAndRemoveAllReservations(sku, nodeId, amount);
-    return new ResponseEntity<>("Stock updated Successfully", HttpStatus.OK);
+    return new ResponseEntity<>("Stock updated Successfully", HttpStatus.NO_CONTENT);
   }
   /**
    * Delete the reservation of lines on nodes and make the inventory available again. If lines not
@@ -112,6 +112,6 @@ public class AvailabilityController {
   @DeleteMapping("/reservation/{cartId}")
   public ResponseEntity<String> removeReservationsForCartItems(@PathVariable String cartId, @Nullable @RequestParam List<String> lines) {
     String response = availabilityService.removeReservationsForCartItems(cartId, lines);
-    return new ResponseEntity<>(response, HttpStatus.OK);
+    return new ResponseEntity<>(response, HttpStatus.NO_CONTENT);
   }
 }
