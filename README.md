@@ -1,3 +1,2 @@
-## template-api-services
-Template for developer repositories.
-Repo to hold custom templates, scripts, and integration configurations that can be used in multiple places.
+## inventory availability api services
+Details could be found at https://ariessolutions.atlassian.net/wiki/spaces/AC/pages/243597345/GCP+Stand-Alone+Inventory+Service
