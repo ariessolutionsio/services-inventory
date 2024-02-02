@@ -10,7 +10,7 @@ on:
       
 
 env:
-  APP_NAME: services-cart
+  APP_NAME: services-inventory
   ORG: ${{ github.repository_owner }}
 #  AWS_REGION : ${{ vars.BUILD_AWS_ECR_REGION }}
 # permission can be added at job level or workflow level
