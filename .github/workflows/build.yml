@@ -10,13 +10,14 @@ on:
       
 
 env:
-  SERVICE_NAME: service-inventory
+  APP_NAME: services-cart
   ORG: ${{ github.repository_owner }}
-
+#  AWS_REGION : ${{ vars.BUILD_AWS_ECR_REGION }}
 # permission can be added at job level or workflow level
 permissions:
   id-token: write # This is required for requesting the JWT
   contents: read # This is required for actions/checkout
+
 
 jobs:
   build:
@@ -28,28 +29,32 @@ jobs:
         uses: actions/setup-java@v3
         with:
           java-version: "11"
-          distribution: "temurin"
+          distribution: "adopt"
           cache: "maven"
-      
-      - name: Exclude pom format issues 
-        run : mvn tidy:pom
+
+      - name: Cache local Maven repository
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
 
       - name: Build with Maven
-        run: mvn clean install -s maven-settings.xml
+        run: mvn clean install
         env:
-          CT_PROJECT_KEY: ${{ vars.BUILD_CT_PROJECT }}
+          CT_PROJECT_KEY: ${{ vars.BUILD_CT_PROJECT_KEY }}
           CT_CLIENT_ID: ${{ secrets.BUILD_CT_CLIENT_ID }}
           CT_CLIENT_SECRET: ${{ secrets.BUILD_CT_CLIENT_SECRET }}
           CT_API_URL: ${{ vars.BUILD_CT_API_URL }}
           CT_AUTH_URL: ${{ vars.BUILD_CT_AUTH_URL }}
           CT_PROJECT_SCOPES: ${{ vars.BUILD_CT_SCOPES }}
-          GITHUB_TOKEN: ${{ secrets.GA_PAT_MAVEN_REPO }}
 
       # Verify against a "build" CT project, typically dev
       - name: Run tests, build OpenAPI spec
         run: mvn verify
         env:
-          CT_PROJECT_KEY: ${{ vars.BUILD_CT_PROJECT }}
+          CT_PROJECT_KEY: ${{ vars.BUILD_CT_PROJECT_KEY }}
           CT_CLIENT_ID: ${{ secrets.BUILD_CT_CLIENT_ID }}
           CT_CLIENT_SECRET: ${{ secrets.BUILD_CT_CLIENT_SECRET }}
           CT_API_URL: ${{ vars.BUILD_CT_API_URL }}
@@ -62,40 +67,3 @@ jobs:
         with:
           name: api-spec
           path: target/openapi.json
-
-# add commit msgs
-      # - name: Sleep for 180 seconds
-      #   run: sleep 180s
-      #   shell: bash
-  
-      # - uses: actions/setup-node@v2
-      #   with: 
-      #       node-version: "18"
-
-      # - name: "Install newman"
-      #   run: "npm install -g newman"
-
-      # - name: "Install newman reporter"
-      #   run: "npm install -g newman-reporter-htmlextra"
-
-      # - name: "post man collection execution"
-      #   run: "newman run postman-collections/cart-session.postman_collection.json -e postman-collections/aries_gateway.postman_environment.json -r htmlextra --reporter-htmlextra-export postman_report.html"
-      
-      # - name: post man collection execution report
-      #   uses: actions/upload-artifact@v3
-      #   with:
-      #     path: postman_report.html
-
-      # - name: Slack Notification
-      #   if: '${{ failure() }}'
-      #   env:
-      #     SLACK_WEBHOOK_URL: '${{ secrets.SLACK_WEBHOOK_URL }}'
-      #   uses: act10ns/slack@v1
-      #   with:
-      #     status: '${{ job.status }}'
-      #     channel: '#api-builderrors'
-      #     message: |-
-      #       Workflow Name: ${{ github.workflow }}
-      #       Status: ${{ job.status }}
-      #       Repository: ${{ github.repository }}
-      #       Commit: ${{ github.sha }}
