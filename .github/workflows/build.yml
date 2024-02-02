@@ -63,7 +63,7 @@ jobs:
           name: api-spec
           path: target/openapi.json
 
-# add commit msg 
+# add commit msgs
       # - name: Sleep for 180 seconds
       #   run: sleep 180s
       #   shell: bash
