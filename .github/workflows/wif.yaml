@@ -22,7 +22,7 @@ jobs:
           create_credentials_file: true
           activate_credentials_file: true
           workload_identity_provider: 'projects/1075624678739/locations/global/workloadIdentityPools/github-identity-pool-dev/providers/github'
-          service_account: 'spanner-dev-access'
+          service_account: 'spanner-dev-access@accelerator-386214.iam.gserviceaccount.com'
           access_token_lifetime: '100s'
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v0.3.0
