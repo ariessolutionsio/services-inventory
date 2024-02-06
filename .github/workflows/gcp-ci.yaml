@@ -1,12 +1,22 @@
-name: wif-ci
+name: Build & Deploy
 
 on:
+  pull_request:
+    branches:
+      - main
   push:
     branches:
-      - 'main'
+      - main
+env:
+  APP_NAME: services-inventory
+  ORG: ${{ github.repository_owner }}
+permissions:
+  id-token: write # This is required for requesting the JWT
+  contents: read # This is required for actions/checkout
+
 jobs:
   build:
-    name: "Test WIF"
+    name: "Build With Workflow Identity Fed"
     runs-on: ubuntu-latest
     timeout-minutes: 90
     permissions:
@@ -14,7 +24,7 @@ jobs:
       id-token: 'write'
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - id: auth
         uses: google-github-actions/auth@v0.4.0
         with:
