@@ -66,6 +66,33 @@ jobs:
         with:
           name: api-spec
           path: target/openapi.json
-#      - name: Run gcloud
-#        run: gcloud compute instances list --zones us-east4-c
+      # push image to GCP
+#      - name: Configure AWS credentials
+#        if: github.ref_name == 'main'
+#        uses: aws-actions/configure-aws-credentials@v1
+#        with:
+#          aws-region: ${{ vars.BUILD_AWS_ECR_REGION }}
+#          role-to-assume: arn:aws:iam::${{ vars.AWS_ACCOUNT_ID }}:role/github-${{ env.ORG }}-${{ env.APP_NAME }}
+
+#      - name: Login to Amazon ECR
+#        if: github.ref_name == 'main'
+#        id: login-ecr
+#        uses: aws-actions/amazon-ecr-login@v1
+
+#      - name: Set short git commit SHA
+#        if: github.ref_name == 'main'
+#        id: vars
+#        run: |
+#          calculatedSha=$(git rev-parse --short ${{ github.sha }})
+#          echo "SHORT_SHA=$calculatedSha" >> $GITHUB_ENV
+
+#      - name: Build, tag, and push docker image to Amazon ECR
+#        if: github.ref_name == 'main'
+#        env:
+#          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+#        run: |
+#          docker build -t ${REGISTRY}/${{ env.APP_NAME }}:${{ env.SHORT_SHA }} .
+#          docker tag ${REGISTRY}/${{ env.APP_NAME }}:${{ env.SHORT_SHA }} ${REGISTRY}/${{ env.APP_NAME }}:latest
+#          docker push ${REGISTRY}/${{ env.APP_NAME }}:${{ env.SHORT_SHA }}
+#          docker push ${REGISTRY}/${{ env.APP_NAME }}:latest 
 
