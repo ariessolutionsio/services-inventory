@@ -12,7 +12,8 @@ env:
   ORG: ${{ github.repository_owner }}
   PROJECT_ID: accelerator-386214
   REGION: us
-  GAR_LOCATION: us-docker.pkg.dev/accelerator-386214/services-inventory/
+  GAR_LOCATION: us-docker.pkg.dev/accelerator-386214/services-inventory
+
   
 permissions:
   id-token: write # This is required for requesting the JWT
@@ -82,14 +83,27 @@ jobs:
           path: target/openapi.json
       - name: "Use gcloud CLI"
         run: "gcloud info"
+      - name: Set short git commit SHA
+        if: github.ref_name == 'main'
+        id: vars
+        run: |
+          calculatedSha=$(git rev-parse --short ${{ github.sha }})
+          echo "SHORT_SHA=$calculatedSha" >> $GITHUB_ENV
       - name: "Docker auth"
         run: |-
           gcloud auth configure-docker ${{ env.REGION }}-docker.pkg.dev --quiet
       - name: Build image
-        run: docker build . --file Dockerfile --tag ${{ env.GAR_LOCATION }}
-       # working-directory: WORKING_DIRECTORY
-      - name: Push image
-        run: docker push ${{ env.GAR_LOCATION }}
+        run: |
+          docker build -t ${{ env.GAR_LOCATION }}:${{ env.SHORT_SHA }} .
+          docker tag ${{ env.GAR_LOCATION }}:${{ env.SHORT_SHA }} ${{ env.GAR_LOCATION }}:latest
+          docker push ${{ env.GAR_LOCATION }}:${{ env.SHORT_SHA }}
+          docker push ${{ env.GAR_LOCATION }}:latest 
+#         docker build -t ${{ env.GAR_LOCATION }}:${{ env.SHORT_SHA }} .
+#         run: docker build . --file Dockerfile --tag ${{ env.GAR_LOCATION }}
+#         working-directory: WORKING_DIRECTORY
+         
+#      - name: Push image
+#        run: docker push ${{ env.GAR_LOCATION }}
   
       # push image to GCP
 #      - name: Configure AWS credentials
