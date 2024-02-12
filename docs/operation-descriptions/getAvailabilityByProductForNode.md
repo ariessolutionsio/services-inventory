@@ -1,0 +1,3 @@
+**Get Availability By ProductID For Nodes**
+
+The getAvailabilityByProductForNode method retrieves the current inventory status of a specific product at a designated inventory location, or Node. This API endpoint is crucial for businesses needing precise, real-time information on product availability to manage stock levels efficiently and improve customer service by providing accurate inventory data.

@@ -1,0 +1,41 @@
+extends:
+  - recommended
+
+theme:
+  openapi:
+    theme:
+      colors:
+        primary:
+          main: "#b52472"
+    generateCodeSamples:
+      languages:
+        - lang: curl
+        - lang: JavaScript
+        - lang: Node.js
+        - lang: Java
+
+decorators:
+  info-override:
+    title: MACH Booster Inventory API
+    contact:
+      name: Aries Solutions
+      url: https://www.ariessolutions.io
+      email: info@ariessolutions.io
+    x-logo:
+      url: https://www.ariessolutions.io/wp-content/uploads/2022/11/CU_Aries_LogoFiles_Final_Magenta-Icon.png
+  info-description-override:
+    filePath: service-description.md
+  operation-description-override:
+    operationIds:
+      updateInventoryForNodeAndRemoveAllReservations: operation-descriptions/updateInventoryForNodeAndRemoveAllReservations.md
+      reserveAvailabilityForOrder: operation-descriptions/reserveAvailabilityForOrder.md
+      addInventory: operation-descriptions/addInventory.md
+      getAvailabilityBySkuIdForNodes: operation-descriptions/getAvailabilityBySkuIdForNodes.md
+      getAvailabilityByProductForNode: operation-descriptions/getAvailabilityByProductForNode.md
+      getAvailabilityByCartId: operation-descriptions/getAvailabilityByCartId.md
+      getAvailabilityByCartIdOnNode: operation-descriptions/getAvailabilityByCartIdOnNode.md
+      removeReservationsForCartItems: operation-descriptions/removeReservationsForCartItems.md
+
+
+
+        

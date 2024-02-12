@@ -1,0 +1,3 @@
+**Get Availability By CartId On Node**
+
+The getAvailabilityByCartIdOnNode method provides a targeted approach to checking inventory availability, focusing on the items within a specific shopping cart and their stock levels at a particular inventory location or Node. This functionality is essential for businesses that manage multiple inventory locations and need to offer customers precise information about where items can be picked up or shipped from.
