@@ -1,0 +1,3 @@
+**Add Inventory**
+
+The addInventory method is designed to increase the inventory level for a specific item at a designated inventory location, or Node. This method allows users to add new stock quantities to the existing inventory, ensuring that the system's inventory records are up to date with physical stock levels. It is particularly useful for updating inventory after receiving new shipments or restocking items.

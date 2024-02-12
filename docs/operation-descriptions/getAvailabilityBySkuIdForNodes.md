@@ -1,0 +1,3 @@
+**Get Availability By SkuId For Nodes**
+
+The getAvailabilityBySkuIdForNodes method is designed to fetch the inventory availability of a specific product, identified by its Stock Keeping Unit (SKU) ID, across multiple inventory locations or Nodes. This function is crucial for businesses that need to provide customers or internal systems with a comprehensive view of where a product is available and in what quantities, facilitating logistics, distribution planning, and enabling customers to make informed purchasing decisions based on product availability at different locations.

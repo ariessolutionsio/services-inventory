@@ -1,0 +1,380 @@
+openapi: 3.0.1
+info:
+  title: MACH Booster Inventory API
+  version: v0
+  description: |+
+    This project is a microservice designed for managing inventory in high-throughput environments. Unlike traditional warehouse inventory systems that include complex logistics and inventory balancing features, this service focuses on maintaining a streamlined dataset to track availability across different inventory locations (referred to as Nodes within the industry). The primary aim is to support online experiences, where rapid and numerous API calls are expected. The inventory availability is dynamically updated to reflect online sales and stock refreshes from physical stores as they happen.
+
+  contact:
+    name: Aries Solutions
+    url: https://www.ariessolutions.io
+    email: info@ariessolutions.io
+  x-logo:
+    url: https://www.ariessolutions.io/wp-content/uploads/2022/11/CU_Aries_LogoFiles_Final_Magenta-Icon.png
+servers:
+  - url: http://services-inventory.api.cloud.ariessolutions.io
+    description: Generated server url
+paths:
+  /v1/availability/{sku}/node/{nodeId}/quantity/{amount}:
+    put:
+      tags:
+        - Inventory
+      operationId: updateInventoryForNodeAndRemoveAllReservations
+      parameters:
+        - name: sku
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: nodeId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: amount
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+      description: |-
+        **Update Inventory for Node and Remove All Reservations**
+
+        This API method is designed to update the inventory level for a specific inventory location (Node) and simultaneously remove all existing reservations associated with that Node. This operation is crucial for scenarios where inventory data needs to be refreshed or corrected, ensuring that the inventory levels accurately reflect the current stock without the constraints of prior reservations.
+  /v1/availability/order/{cartId}:
+    post:
+      tags:
+        - Inventory
+      operationId: reserveAvailabilityForOrder
+      parameters:
+        - name: cartId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CartRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ReservationResponse'
+      description: |-
+        **Reserve Inventory Availability for an Order**
+
+        This API method allows for the reservation of inventory for a specific order. It is designed to allocate inventory to an order, ensuring that the items are available for fulfillment. This reservation helps manage inventory levels effectively and prevent overselling.
+  /v1/availability/addInventory:
+    post:
+      tags:
+        - Inventory
+      operationId: addInventory
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InventoryRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Inventory'
+      description: |-
+        **Add Inventory**
+
+        The addInventory method is designed to increase the inventory level for a specific item at a designated inventory location, or Node. This method allows users to add new stock quantities to the existing inventory, ensuring that the system's inventory records are up to date with physical stock levels. It is particularly useful for updating inventory after receiving new shipments or restocking items.
+  /v1/availability/{skuId}:
+    get:
+      tags:
+        - Inventory
+      operationId: getAvailabilityBySkuIdForNodes
+      parameters:
+        - name: skuId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: node
+          in: query
+          required: true
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/SkuAvailabilityResponse'
+      description: |-
+        **Get Availability By SkuId For Nodes**
+
+        The getAvailabilityBySkuIdForNodes method is designed to fetch the inventory availability of a specific product, identified by its Stock Keeping Unit (SKU) ID, across multiple inventory locations or Nodes. This function is crucial for businesses that need to provide customers or internal systems with a comprehensive view of where a product is available and in what quantities, facilitating logistics, distribution planning, and enabling customers to make informed purchasing decisions based on product availability at different locations.
+  /v1/availability/product/{productKey}:
+    get:
+      tags:
+        - Inventory
+      operationId: getAvailabilityByProductForNode
+      parameters:
+        - name: productKey
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: node
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProductForNodeResponse'
+      description: |-
+        **Get Availability By ProductID For Nodes**
+
+        The getAvailabilityByProductForNode method retrieves the current inventory status of a specific product at a designated inventory location, or Node. This API endpoint is crucial for businesses needing precise, real-time information on product availability to manage stock levels efficiently and improve customer service by providing accurate inventory data.
+  /v1/availability/cart/{cartId}:
+    get:
+      tags:
+        - Inventory
+      operationId: getAvailabilityByCartId
+      parameters:
+        - name: cartId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: cartRequest
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/CartRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/CartAvailabilityResponse'
+      description: |-
+        **Get Availability By CartID**
+
+        The getAvailabilityByCartId method retrieves the current inventory availability for all items within a specified shopping cart. It is designed to provide real-time feedback on the stock levels of items that customers are interested in purchasing, ensuring that they are informed about the availability of their selected products before proceeding to checkout.
+  /v1/availability/cart/{cartId}/node/{nodeId}:
+    get:
+      tags:
+        - Inventory
+      operationId: getAvailabilityByCartIdOnNode
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+      description: |-
+        **Get Availability By CartId On Node**
+
+        The getAvailabilityByCartIdOnNode method provides a targeted approach to checking inventory availability, focusing on the items within a specific shopping cart and their stock levels at a particular inventory location or Node. This functionality is essential for businesses that manage multiple inventory locations and need to offer customers precise information about where items can be picked up or shipped from.
+  /v1/availability/reservation/{cartId}:
+    delete:
+      tags:
+        - Inventory
+      operationId: removeReservationsForCartItems
+      parameters:
+        - name: cartId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: lines
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+      description: |-
+        **Remove Reservations For Cart Items**
+
+        The removeReservationsForCartItems method is designed to release any inventory reservations held for items within a specific shopping cart. This API endpoint plays a crucial role in inventory management systems, especially in scenarios where a customer decides not to proceed with a purchase, or a reserved inventory needs to be freed up for other potential sales.
+components:
+  schemas:
+    CartRequest:
+      type: object
+      properties:
+        cartId:
+          type: string
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/LineItemRequest'
+    LineItemRequest:
+      type: object
+      properties:
+        lineItemId:
+          type: string
+        skuId:
+          type: string
+        node:
+          type: string
+        quantity:
+          type: string
+    ReservationLineItemResponse:
+      type: object
+      properties:
+        lineId:
+          type: string
+        skuId:
+          type: string
+        quantityOnStock:
+          type: number
+        reservedAmount:
+          type: number
+        message:
+          type: string
+    ReservationResponse:
+      type: object
+      properties:
+        reservedItems:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReservationLineItemResponse'
+    InventoryRequest:
+      type: object
+      properties:
+        skuId:
+          type: string
+        nodeId:
+          type: string
+        productKey:
+          type: string
+        quantityOnStock:
+          type: number
+    Inventory:
+      type: object
+      properties:
+        id:
+          type: string
+        skuId:
+          type: string
+        nodeId:
+          type: string
+        productKey:
+          type: string
+        quantityOnStock:
+          type: number
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        reservations:
+          type: array
+          items:
+            $ref: '#/components/schemas/InventoryReservation'
+        reservedQuantity:
+          type: number
+    InventoryReservation:
+      type: object
+      properties:
+        id:
+          type: string
+        inventoryId:
+          type: string
+        cartKey:
+          type: string
+        lineId:
+          type: string
+        reservedQuantity:
+          type: number
+        message:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        inventoryReference:
+          $ref: '#/components/schemas/Inventory'
+    SkuAvailabilityResponse:
+      type: object
+      properties:
+        availableItems:
+          type: array
+          items:
+            $ref: '#/components/schemas/SkuNodeResponse'
+    SkuNodeResponse:
+      type: object
+      properties:
+        skuId:
+          type: string
+        quantity:
+          type: number
+        nodeId:
+          type: string
+    ProductForNodeResponse:
+      type: object
+      properties:
+        nodeId:
+          type: string
+        productKey:
+          type: string
+        availableItems:
+          type: array
+          items:
+            $ref: '#/components/schemas/SkuLineResponse'
+    SkuLineResponse:
+      type: object
+      properties:
+        skuId:
+          type: string
+        quantity:
+          type: number
+    CartAvailabilityResponse:
+      type: object
+      properties:
+        availableItems:
+          type: array
+          items:
+            $ref: '#/components/schemas/CartLineItemResponse'
+    CartLineItemResponse:
+      type: object
+      properties:
+        cartLineId:
+          type: string
+        skuId:
+          type: string
+        available:
+          type: number
+        message:
+          type: string
