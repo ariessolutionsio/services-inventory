@@ -75,6 +75,12 @@ jobs:
           CT_API_URL: ${{ vars.BUILD_CT_API_URL }}
           CT_AUTH_URL: ${{ vars.BUILD_CT_AUTH_URL }}
           CT_PROJECT_SCOPES: ${{ vars.BUILD_CT_SCOPES }}
+      - name: Build and analyze
+        env:
+         # GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=services-inventory          
       # Save open api spec as artifact
       - name: Archive OpenAPI spec
         uses: actions/upload-artifact@v3
