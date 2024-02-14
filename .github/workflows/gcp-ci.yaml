@@ -21,17 +21,13 @@ permissions:
 
 jobs:
   build:
-    name: "Build"
     runs-on: ubuntu-latest
     timeout-minutes: 90
-#    permissions:
-#      contents: 'read'
-#      id-token: 'write'
     steps:
       - name: Checkout
         uses: actions/checkout@v3
       - id: auth
-        if: github.ref_name == 'main'
+#        if: github.ref_name == 'main'  # authentication is needed even for build and Test because of dependency on GCP jar files 
         name: "Authenticate with GCP using WIF"
         uses: google-github-actions/auth@v0.4.0
         with:
@@ -42,13 +38,13 @@ jobs:
           service_account: 'spanner-dev-access@accelerator-386214.iam.gserviceaccount.com'
           access_token_lifetime: '100s'
       - name: Set up Cloud SDK
-        if: github.ref_name == 'main'
+#        if: github.ref_name == 'main'
         uses: google-github-actions/setup-gcloud@v0.3.0
       - name: set crdential_file
-        if: github.ref_name == 'main'
+#        if: github.ref_name == 'main'
         run: gcloud auth login --cred-file=${{steps.auth.outputs.credentials_file_path}}
       - name: "Use gcloud CLI"
-        if: github.ref_name == 'main'
+#        if: github.ref_name == 'main'
         run: "gcloud info"
       - name: Set up JDK 17
         uses: actions/setup-java@v4
@@ -85,12 +81,7 @@ jobs:
           CT_PROJECT_SCOPES: ${{ vars.BUILD_CT_SCOPES }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-#      - name: Build and analyze
-#        env:
-#         # GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
-#          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-#          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-#        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=${{ env.APP_NAME }}          
+          
       # Save open api spec as artifact
       - name: Archive OpenAPI spec
         uses: actions/upload-artifact@v3
