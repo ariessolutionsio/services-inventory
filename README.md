@@ -1,4 +1,6 @@
-<img align="right" alt="Aries MACH Booster" width="300" src="https://www.ariessolutions.io/wp-content/uploads/2024/01/aries-about-us-imagery.png">
+<p align="center">
+<img alt="Aries Labs" width="300" src="docs/assets/Labs-For-Dk_BG.svg">
+</p>
 
 
 # Inventory Service
@@ -82,6 +84,6 @@ If you would like to discuss alternative licensing or leveraging this applicatio
 ----
 
 
-# [MACH Booster](https://www.ariessolutions.io/composable-commerce/mach-booster-commercetools-accelerator/)
+# [Aries Labs](https://www.ariessolutions.io/)
 
-This service was generated from the template-api-service which is part of the [MACH Booster](https://www.ariessolutions.io/composable-commerce/mach-booster-commercetools-accelerator/) accelerator. The MACH Booster uses custom CLI tooling and prebuilt components to quickly build a full composable commerce solution.
+This project is part of the Aries Labs initiative. To learn more about Aries Solutions and other projects including the MACH Booster please visit our website. [ariessolutions.io](https://www.ariessolutions.io)
