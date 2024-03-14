@@ -13,7 +13,7 @@ This will bundle the live OpenAPI specification with the config and extended con
 npx @redocly/cli bundle https://services-inventory.api.cloud.ariessolutions.io/v3/api-docs -o dist-bundle.yaml
 ```
 
-### Generate the Documenation File
+### Generate the Documentation File
 
 ```bash
 npx @redocly/cli build-docs dist-bundle.yaml -o index.html
