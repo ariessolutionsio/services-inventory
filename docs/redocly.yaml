@@ -3,6 +3,7 @@ extends:
 
 theme:
   openapi:
+    htmlTemplate: template.html
     theme:
       colors:
         primary:
@@ -35,7 +36,3 @@ decorators:
       getAvailabilityByCartId: operation-descriptions/getAvailabilityByCartId.md
       getAvailabilityByCartIdOnNode: operation-descriptions/getAvailabilityByCartIdOnNode.md
       removeReservationsForCartItems: operation-descriptions/removeReservationsForCartItems.md
-
-
-
-        
